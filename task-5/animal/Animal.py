@@ -16,7 +16,7 @@ class Animal():
 
     def feed(self):
         print('Покормили')
-                
+
 
 class Animal_weight():
     """Класс для работы с весом животных"""
@@ -28,13 +28,12 @@ class Animal_weight():
         for animal in animals:
             self.__add(animal)
 
-
     def __set_heaviest_animal(self, animal: Animal):
         if not self.__heaviest_animal:
             self.__heaviest_animal = animal
         if self.__heaviest_animal.weight < animal.weight:
             self.__heaviest_animal = animal
-    
+
     def __add(self, animal: Animal):
         self.__set_heaviest_animal(animal)
         self.__full_weight += float(animal.weight)
@@ -48,83 +47,98 @@ class Animal_weight():
     def full_weight(self):
         return self.__full_weight
 
+
 class Egg():
     """ Получить яйца с животного """
     __allowed = True
-    
+
     def get_egg(self):
-        
+
         if self.__allowed:
             print('Собрали яйца')
         else:
             print('Нет яиц')
         self.__allowed = False
 
+
 class Vote():
     """ Голос животного """
+
     def vote(self):
         pass
 
+
 class Milk():
-    """ Доить молоко """  
+    """ Доить молоко """
     __allowed = True
-    
+
     def get_milk(self):
         if self.__allowed:
             print('Подоили молоко')
         else:
             print('Нет молока')
         self.__allowed = False
-        
+
+
 class Shearing():
     """ Стричь животное """
     __allowed = True
+
     def cut(self):
         if self.__allowed:
             print('Подстригли')
         else:
             print('Нет шерсти')
-        self.__allowed = False        
-        
+        self.__allowed = False
+
+
 class Bird(Animal, Egg):
     """ Птицы """
-    pass    
+    pass
 
 
 class Goose(Bird, Vote):
-   """ Гусь - несет яйца """
-   def vote(self):
-       return 'Га-га-га'
+    """ Гусь - несет яйца """
+
+    def vote(self):
+        return 'Га-га-га'
+
 
 class Hen(Bird, Vote):
     """ Курица - несет яйца """
+
     def vote(self):
         return 'Ко-ко-ко'
-                      
+
+
 class Cow(Animal, Vote, Milk):
     """ Корова - дает молоко """
+
     def vote(self):
         return 'Мууууу'
 
-                      
 
 class Sheep(Animal, Vote, Shearing):
     """ Бараны - дают шерсть """
+
     def vote(self):
-        return 'Беееее' 
+        return 'Беееее'
+
 
 class Goat(Animal, Vote, Milk):
     """ Козы - дают молоко """
+
     def vote(self):
         return 'Меееее'
-        
+
 
 class Duck(Bird, Vote):
-    """ Утка - несет яйца """ 
+    """ Утка - несет яйца """
+
     def vote(self):
-        return 'Кря-Кря'    
+        return 'Кря-Кря'
+
 
 class Turtle(Animal, Egg):
     """Черепаха - несет яйца"""
     pass
-        
