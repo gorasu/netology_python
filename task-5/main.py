@@ -52,7 +52,7 @@ for animal_on_farm in animals_on_farm:
     animal = _class(animal_on_farm['init'])
     animals.append(animal)
 
-animal_weight = Animal_weight(animals)
+animal_weight = AnimalWeight(animals)
 
 for animal in animals:
     print(type(animal), animal.name)

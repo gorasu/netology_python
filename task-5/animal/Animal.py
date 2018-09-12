@@ -18,7 +18,7 @@ class Animal:
         print('Покормили')
 
 
-class Animal_weight:
+class AnimalWeight:
     """Класс для работы с весом животных"""
     animals = list()
     __heaviest_animal = None
