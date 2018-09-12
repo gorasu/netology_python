@@ -1,52 +1,50 @@
 from animal.Animal import *
 
-
 animals_on_farm = [
-  {'type':'Goose'
-   , 'init':{'name':'Серый гусь', 'weight':12}
-  }
-  
-  , {'type':'Goose'
-   , 'init':{'name':'Белый гусь', 'weight':10}
-  } 
-  
-  , {'type':'Hen'
-   , 'init':{'name':'Ко-Ко', 'weight':1}
-  } 
+    {'type': 'Goose'
+        , 'init': {'name': 'Серый гусь', 'weight': 12}
+     }
 
-  , {'type':'Hen'
-   , 'init':{'name':'Кукареку', 'weight':12}
-  }
+    , {'type': 'Goose'
+        , 'init': {'name': 'Белый гусь', 'weight': 10}
+       }
 
-  , {'type':'Cow'
-   , 'init':{'name':'Манька', 'weight':150}
-  }  
+    , {'type': 'Hen'
+        , 'init': {'name': 'Ко-Ко', 'weight': 1}
+       }
 
-  , {'type':'Sheep'
-   , 'init':{'name':'Барашек', 'weight':40}
-  } 
+    , {'type': 'Hen'
+        , 'init': {'name': 'Кукареку', 'weight': 12}
+       }
 
-  , {'type':'Sheep'
-   , 'init':{'name':'Кудрявый', 'weight':50}
-  } 
+    , {'type': 'Cow'
+        , 'init': {'name': 'Манька', 'weight': 150}
+       }
 
-  , {'type':'Goat'
-   , 'init':{'name':'Рога', 'weight':50}
-  }    
-   
-  , {'type':'Goat'
-   , 'init':{'name':'Копыта', 'weight':45}
-  }  
+    , {'type': 'Sheep'
+        , 'init': {'name': 'Барашек', 'weight': 40}
+       }
 
-  , {'type':'Duck'
-   , 'init':{'name':'Кряква', 'weight':5}
-  } 
+    , {'type': 'Sheep'
+        , 'init': {'name': 'Кудрявый', 'weight': 50}
+       }
 
-  , {'type':'Turtle'
-   , 'init':{'name':'Леонардо', 'weight':0.9}
-  }           
+    , {'type': 'Goat'
+        , 'init': {'name': 'Рога', 'weight': 50}
+       }
+
+    , {'type': 'Goat'
+        , 'init': {'name': 'Копыта', 'weight': 45}
+       }
+
+    , {'type': 'Duck'
+        , 'init': {'name': 'Кряква', 'weight': 5}
+       }
+
+    , {'type': 'Turtle'
+        , 'init': {'name': 'Леонардо', 'weight': 0.9}
+       }
 ]
-
 
 animals = list()
 for animal_on_farm in animals_on_farm:
@@ -54,9 +52,7 @@ for animal_on_farm in animals_on_farm:
     animal = _class(animal_on_farm['init'])
     animals.append(animal)
 
-
 animal_weight = Animal_weight(animals)
-
 
 for animal in animals:
     print(type(animal), animal.name)
@@ -66,18 +62,14 @@ for animal in animals:
     if isinstance(animal, Vote):
         print(animal.vote())
     if isinstance(animal, Milk):
-        animal.get_milk() 
+        animal.get_milk()
     if isinstance(animal, Shearing):
-        animal.cut()               
+        animal.cut()
 
     print()
 
-
 print('Самый тяжелый:', animal_weight.heaviest_animal.name, '', animal_weight.heaviest_animal.weight)
 print('Общий вес:', animal_weight.full_weight)
-
-
-
 
 # Домашнее задание к лекции 1.5 «Классы и их применение в Python»
 
@@ -97,7 +89,8 @@ print('Общий вес:', animal_weight.full_weight)
 # * различать по голосам(коровы мычат, утки крякают и т.д.)
 
 # ## Задача №1
-# Нужно реализовать классы животных, не забывая использовать наследование, определить *общие методы* взаимодействия с животными и 
+# Нужно реализовать классы животных, не забывая использовать наследование,
+# определить *общие методы* взаимодействия с животными и
 # дополнить их в дочерних классах, если потребуется.
 
 # ## Задача №2
@@ -110,5 +103,5 @@ print('Общий вес:', animal_weight.full_weight)
 # - Вывести название самого тяжелого животного.
 
 # ## Задача №4
-# Для подготовки к следующей лекции прочитайте про [работу с файлами](https://pythonworld.ru/tipy-dannyx-v-python/fajly-rabota-s-fajlami.html).
-
+# Для подготовки к следующей лекции прочитайте про [
+# работу с файлами](https://pythonworld.ru/tipy-dannyx-v-python/fajly-rabota-s-fajlami.html).
