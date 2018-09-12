@@ -7,6 +7,7 @@ def clean_string(string):
 
 
 def recipe_format(recipe_list):
+
     result = dict()
     recipe_name = recipe_list.pop(0)
     recipe_ingridient_count = recipe_list.pop(0)
@@ -19,6 +20,16 @@ def recipe_format(recipe_list):
 
     result[recipe_name] = ingredient_list
     return result
+
+
+def get_shop_list_by_dishes(dishes, person_count):
+    ingredients = dict()
+    for dish in dishes:
+        for ingredient in recipes[dish]:
+            ingredients[ingredient['ingredient_name']] = {'quantity': int(ingredient['quantity']), 'measure': ingredient['measure']}
+    for ingredient in ingredients.values():
+        ingredient['quantity'] *= int(person_count)
+    return ingredients
 
 
 with open('cook_book.txt') as cook_book_file:
@@ -36,3 +47,5 @@ with open('cook_book.txt') as cook_book_file:
             recipe = list()
 
 print(recipes)
+shop_list = get_shop_list_by_dishes(['Омлет', 'Фахитос'], 40)
+print(shop_list)
