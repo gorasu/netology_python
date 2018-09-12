@@ -1,4 +1,4 @@
-class Animal():
+class Animal:
     __weight = 0
     __name = None
 
@@ -18,7 +18,7 @@ class Animal():
         print('Покормили')
 
 
-class Animal_weight():
+class Animal_weight:
     """Класс для работы с весом животных"""
     animals = list()
     __heaviest_animal = None
@@ -48,7 +48,7 @@ class Animal_weight():
         return self.__full_weight
 
 
-class Egg():
+class Egg:
     """ Получить яйца с животного """
     __allowed = True
 
@@ -61,14 +61,14 @@ class Egg():
         self.__allowed = False
 
 
-class Vote():
+class Vote:
     """ Голос животного """
 
     def vote(self):
         pass
 
 
-class Milk():
+class Milk:
     """ Доить молоко """
     __allowed = True
 
@@ -80,7 +80,7 @@ class Milk():
         self.__allowed = False
 
 
-class Shearing():
+class Shearing:
     """ Стричь животное """
     __allowed = True
 
