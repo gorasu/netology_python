@@ -1,7 +1,3 @@
-open('cook_book.txt')
-first_list = list()
-
-
 def clean_string(string):
     return string.strip()
 
