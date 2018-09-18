@@ -49,8 +49,8 @@ class ParserXml(Parser):
 class ParserJson(Parser):
 
     def parse(self):
-        with(open(self.file())) as jfile:
-            json_str = json.load(jfile)
+        with(open(self.file())) as json_file:
+            json_str = json.load(json_file)
         for news in json_str['rss']['channel']['items']:
             self._add_news(News(news))
 
