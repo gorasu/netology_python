@@ -1,7 +1,7 @@
 from pprint import pprint
 from src.parser import *
 
-file_list = ['file/newsafr.xml', 'file/newsafr.json', 'file/newsafr.txt']
+file_list = ['./file/newsafr.xml', './file/newsafr.json', './file/newsafr.txt']
 
 for file in file_list:
     factory = ParserFactory(file)
