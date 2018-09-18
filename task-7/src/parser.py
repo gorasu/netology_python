@@ -65,7 +65,7 @@ class ParserTxt(Parser):
             self._add_news(News({'description':description}))
 
 
-class ParserFactory:
+class ParserBuilder:
     __file = None
 
     def __init__(self, file):
@@ -80,7 +80,7 @@ class ParserFactory:
     def __is_txt(self):
         return self.__file.find('.txt') is not -1
 
-    def get_parser(self) -> Parser:
+    def build(self) -> Parser:
         if self.__is_json():
             return ParserJson(self.__file)
         if self.__is_xml():
