@@ -19,6 +19,7 @@ def recipe_format(recipe_list):
 
 
 def get_shop_list_by_dishes(dishes, person_count):
+    recipes = get_recipes()
     ingredients = dict()
     for dish in dishes:
         for ingredient in recipes[dish]:
@@ -28,20 +29,22 @@ def get_shop_list_by_dishes(dishes, person_count):
     return ingredients
 
 
-with open('cook_book.txt') as cook_book_file:
-    recipes = dict()
-    recipe = list()
-    line_list = cook_book_file.readlines()
-    line_iteration_count = (len(line_list) - 1)
-    for index, line in enumerate(line_list):
-        line = clean_string(line)
-        if line and (index != line_iteration_count):
-            recipe.append(line)
-        else:
-            if recipe:
-                recipes.update(recipe_format(recipe))
-            recipe = list()
+def get_recipes():
+    with open('cook_book.txt') as cook_book_file:
+        recipes = dict()
+        recipe = list()
+        line_list = cook_book_file.readlines()
+        line_iteration_count = (len(line_list) - 1)
+        for index, line in enumerate(line_list):
+            line = clean_string(line)
+            if line and (index != line_iteration_count):
+                recipe.append(line)
+            else:
+                if recipe:
+                    recipes.update(recipe_format(recipe))
+                recipe = list()
+    return recipes
 
-print(recipes)
+
 shop_list = get_shop_list_by_dishes(['Омлет', 'Фахитос'], 40)
 print(shop_list)
