@@ -71,27 +71,23 @@ class ParserFactory:
     def __init__(self, file):
         self.__file = file
 
-    @property
-    def file(self) -> str:
-        return self.__file
+    def __is_json(self):
+        return self.__file.find('.json') is not -1
 
-    def is_json(self):
-        return self.file.find('.json') is not -1
+    def __is_xml(self):
+        return self.__file.find('.xml') is not -1
 
-    def is_xml(self):
-        return self.file.find('.xml') is not -1
-
-    def is_txt(self):
-        return self.file.find('.txt') is not -1
+    def __is_txt(self):
+        return self.__file.find('.txt') is not -1
 
     def get_parser(self) -> Parser:
-        if self.is_json():
-            return ParserJson(self.file)
-        if self.is_xml():
-            return ParserXml(self.file)
-        if self.is_txt():
-            return ParserTxt(self.file)
-        print('для файла', self.file, 'нет парсера')
+        if self.__is_json():
+            return ParserJson(self.__file)
+        if self.__is_xml():
+            return ParserXml(self.__file)
+        if self.__is_txt():
+            return ParserTxt(self.__file)
+        print('для файла', self.__file, 'нет парсера')
 
 
 class TopNewsWord:
