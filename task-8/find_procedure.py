@@ -1,5 +1,5 @@
 from pprint import pprint
-from typing import List
+from typing import List, Callable
 import os
 
 
@@ -8,8 +8,13 @@ class File:
     def __init__(self, path):
         self.__path = path
 
-    def get_path(self) -> str:
+    def path(self) -> str:
         return self.__path
+
+    def read(self):
+        with open(self.__path) as file:
+            content = file.read()
+        return content
 
 
 class Files:
@@ -22,11 +27,11 @@ class Files:
     def __join_path(self, path):
         return os.path.join(self.__dir_path, path)
 
-    def get_files(self) -> List[File]:
+    def get_files(self, file_filter: Callable = None) -> List[File]:
         result = list()
         for entity in os.listdir(self.__dir_path):
             entity_path = self.__join_path(entity)
-            if os.path.isfile(entity_path):
+            if os.path.isfile(entity_path) and (file_filter and file_filter(entity_path)):
                 result.append(File(entity_path))
         return result
 
@@ -66,33 +71,34 @@ class Searcher:
     def search(self, search_string) -> SearchResult:
         result = SearchResultSetter()
         for file in self.__get_files_for_search():
-            with open(file.get_path()) as search_file:
-                if search_string in search_file.read():
-                    result.add_file(file)
+            if search_string in file.read():
+                result.add_file(file)
         self.__last_result = result
         return self.__last_result
 
 
 class Command:
 
-    def __init__(self, files: Files):
-        self.__searcher = Searcher(files.get_files())
+    def __init__(self, files: List[File]):
+        self.__searcher = Searcher(files)
+
+    def search(self, search_string):
+        return self.__searcher.search(search_string)
 
     def start(self):
         search_string = input('Введите строку поиска:')
-        result = self.__searcher.search(search_string)
+        result = self.search(search_string)
         if result.get_count() > 10:
             print('Много файлов ищите еще')
+            print("Всего:", result.get_count())
             self.start()
         print('Нашли в')
         print(result.get_files())
 
 
 file_ser = Files('./Migrations/')
-pprint(file_ser.get_files())
-
-
-#command = Command()
+command = Command(file_ser.get_files((lambda file_path: os.path.splitext(file_path)[1] == '.sql')))
+command.start()
 
 # word = input('Введите строку поиска:')
 # command = Command(FileForSearch())
