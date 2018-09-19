@@ -3,7 +3,6 @@ def clean_string(string):
 
 
 def recipe_format(recipe_list):
-
     result = dict()
     recipe_name = recipe_list.pop(0)
     recipe_ingridient_count = recipe_list.pop(0)
