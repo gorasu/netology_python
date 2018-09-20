@@ -28,6 +28,8 @@ class ResizeSettings:
 
     @property
     def width(self):
+        if not self.__width or self.__width <= 0:
+            raise ValueError('width must be int and > 0')
         return self.__width
 
     @width.setter
@@ -76,7 +78,7 @@ class Resizer:
         self._resize_command(resize_settings)
 
     def _resize_command(self, resize_settings: ResizeSettings):
-        raise Exception('Command "_resize_command" is not implemented')
+        raise NotImplementedError('Command "_resize_command" is not implemented')
 
 
 class ResizerMac(Resizer):
@@ -134,3 +136,4 @@ for file in os.listdir(source_folder):
         print(e.get_file(), 'не изображение')
         print("\n")
         continue
+
