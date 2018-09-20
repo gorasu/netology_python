@@ -1,4 +1,3 @@
-from pprint import pprint
 from typing import List, Callable
 import os
 
@@ -61,7 +60,7 @@ class Searcher:
 
     def __init__(self, files):
         self.__files = files
-        self.__last_result = None
+        self.rest_search_result()
 
     def __get_files_for_search(self) -> List[File]:
         if self.__last_result:
@@ -76,32 +75,39 @@ class Searcher:
         self.__last_result = result
         return self.__last_result
 
+    def rest_search_result(self):
+        self.__last_result = None
+
 
 class Command:
 
     def __init__(self, files: List[File]):
         self.__searcher = Searcher(files)
 
-    def search(self, search_string):
+    def __show_result(self, result: SearchResult):
+        print('Нашли в:')
+        for file in result.get_files():
+            print(file.path())
+        print("Всего:", result.get_count())
+
+    def search_result(self, search_string):
         return self.__searcher.search(search_string)
 
     def start(self):
         search_string = input('Введите строку поиска:')
-        result = self.search(search_string)
-        if result.get_count() > 10:
+        result = self.search_result(search_string)
+        if result.get_count() == 0:
+            print('Ничего не найдено, начните поиск заново')
+            self.__searcher.rest_search_result()
+        elif result.get_count() > 2:
             print('Много файлов ищите еще')
             print("Всего:", result.get_count())
-            self.start()
-        print('Нашли в')
-        print(result.get_files())
+        else:
+            self.__show_result(result)
+        self.start()
 
 
 file_ser = Files('./Migrations/')
 command = Command(file_ser.get_files((lambda file_path: os.path.splitext(file_path)[1] == '.sql')))
 command.start()
 
-# word = input('Введите строку поиска:')
-# command = Command(FileForSearch())
-# command.start()
-# files = FileForSearch()
-# searcher = Searcher(files.get_files()) # List[Files]
