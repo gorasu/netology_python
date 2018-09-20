@@ -110,4 +110,3 @@ class Command:
 file_ser = Files('./Migrations/')
 command = Command(file_ser.get_files((lambda file_path: os.path.splitext(file_path)[1] == '.sql')))
 command.start()
-
