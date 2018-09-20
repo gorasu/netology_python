@@ -6,12 +6,25 @@ import subprocess
 from sys import platform
 
 
+class ExceptionIsNotImage(Exception):
+    __file = ''
+
+    def set_file(self, file):
+        self.__file = file
+
+    def get_file(self):
+        return self.__file
+
+
 class ResizeSettings:
 
     def __init__(self, source_file, result_dir=None):
         self.__width = None
         self.__result_dir = result_dir
         self.__source_file = source_file
+
+    def is_image(self):
+        return os.path.splitext(self.source_file)[1].lower().strip('.') in ['jpg', 'png', 'gif']
 
     @property
     def width(self):
@@ -56,6 +69,10 @@ class Resizer:
     def resize(self, resize_settings: ResizeSettings):
         if not os.path.isfile(resize_settings.source_file):
             raise FileNotFoundError()
+        if not resize_settings.is_image():
+            exception = ExceptionIsNotImage()
+            exception.set_file(resize_settings.source_file)
+            raise exception
         self._resize_command(resize_settings)
 
     def _resize_command(self, resize_settings: ResizeSettings):
@@ -108,6 +125,12 @@ resizer = get_resizer()
 source_folder = os.path.join('.', 'task-8.4-files', 'Source')
 result_folder = os.path.join('.', 'task-8.4-files', 'Result')
 for file in os.listdir(source_folder):
-    resizer_config = ResizeSettings(os.path.join(source_folder, file), result_folder)
-    resizer_config.width = 200
-    resizer.resize(resizer_config)
+    try:
+        resizer_config = ResizeSettings(os.path.join(source_folder, file), result_folder)
+        resizer_config.width = 200
+        resizer.resize(resizer_config)
+    except ExceptionIsNotImage as e:
+        print("\n", 'ERROR')
+        print(e.get_file(), 'не изображение')
+        print("\n")
+        continue
