@@ -1,2 +1,4 @@
 __pycache__/
 task-8/task-8.4-files/Result/
+/task-9/result/*
+!.gitkeep
