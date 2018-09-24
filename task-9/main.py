@@ -2,10 +2,15 @@ import os
 import requests
 from urllib.parse import urlencode
 
-#API_KEY = 'trnsl.1.1.20161025T233221Z.47834a66fd7895d0.a95fd4bfde5c1794fa433453956bd261eae80152'
+
+# API_KEY = 'trnsl.1.1.20161025T233221Z.47834a66fd7895d0.a95fd4bfde5c1794fa433453956bd261eae80152'
 
 
 class YandexApiError(Exception):
+    pass
+
+
+class TextIsTooLarge(Exception):
     pass
 
 
@@ -27,7 +32,10 @@ class YandexTranslate:
     def set_lang(self, from_lang, to_lang):
         self.__lang = '{}-{}'.format(from_lang, to_lang)
 
-    def traslate(self, text):
+    def translate(self, text):
+        if len(text) > 10000:
+            raise TextIsTooLarge('Текст должен быть менее 10000 символов')
+
         params = {
             'text': text
         }
@@ -66,7 +74,7 @@ def translate_it(source_file, result_file, from_lang, to_lang='ru'):
         'trnsl.1.1.20180924T143709Z.6825569223ac94fd.5fa82d7238defa3e8f024b77c3e57b09a4c37cba')
     translate = translate_builder.build()
     translate.set_lang(from_lang, to_lang)
-    result_text = translate.traslate(source_text)
+    result_text = translate.translate(source_text)
 
     with open(result_file, 'w+') as file:
         file.write(result_text)
