@@ -1,10 +1,8 @@
 import os
-
 import requests
 from urllib.parse import urlencode
 
-API_KEY = 'trnsl.1.1.20161025T233221Z.47834a66fd7895d0.a95fd4bfde5c1794fa433453956bd261eae80152'
-URL = 'https://translate.yandex.net/api/v1.5/tr.json/translate'
+#API_KEY = 'trnsl.1.1.20161025T233221Z.47834a66fd7895d0.a95fd4bfde5c1794fa433453956bd261eae80152'
 
 
 class YandexApiError(Exception):
