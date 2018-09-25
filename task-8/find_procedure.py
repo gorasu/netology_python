@@ -41,7 +41,8 @@ class SearchResult:
     def files(self) -> List[File]:
         return self._files
 
-    def get_count(self) -> int:
+    @property
+    def count(self) -> int:
         return len(self.files)
 
 
@@ -88,7 +89,7 @@ class Command:
         print('Нашли в:')
         for file in result.files:
             print(file.path())
-        print("Всего:", result.get_count())
+        print("Всего:", result.count)
 
     def search_result(self, search_string):
         return self.__searcher.search(search_string)
@@ -96,12 +97,12 @@ class Command:
     def start(self):
         search_string = input('Введите строку поиска:')
         result = self.search_result(search_string)
-        if result.get_count() == 0:
+        if result.count == 0:
             print('Ничего не найдено, начните поиск заново')
             self.__searcher.rest_search_result()
-        elif result.get_count() > 2:
+        elif result.count > 2:
             print('Много файлов ищите еще')
-            print("Всего:", result.get_count())
+            print("Всего:", result.count)
         else:
             self.__show_result(result)
         self.start()
