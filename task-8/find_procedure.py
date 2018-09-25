@@ -37,11 +37,12 @@ class Files:
 class SearchResult:
     _files: List[File] = list()
 
-    def get_files(self) -> List[File]:
+    @property
+    def files(self) -> List[File]:
         return self._files
 
     def get_count(self) -> int:
-        return len(self.get_files())
+        return len(self.files)
 
 
 class SearchResultSetter(SearchResult):
@@ -63,7 +64,7 @@ class Searcher:
 
     def __get_files_for_search(self) -> List[File]:
         if self.__last_result:
-            return self.__last_result.get_files()
+            return self.__last_result.files
         return self.__files
 
     def search(self, search_string) -> SearchResult:
@@ -85,7 +86,7 @@ class Command:
 
     def __show_result(self, result: SearchResult):
         print('Нашли в:')
-        for file in result.get_files():
+        for file in result.files:
             print(file.path())
         print("Всего:", result.get_count())
 
