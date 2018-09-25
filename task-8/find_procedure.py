@@ -12,8 +12,7 @@ class File:
 
     def read(self):
         with open(self.__path) as file:
-            content = file.read()
-        return content
+            return file.read()
 
 
 class Files:
@@ -42,7 +41,7 @@ class SearchResult:
         return self._files
 
     def get_count(self) -> int:
-        return int(len(self.get_files()))
+        return len(self.get_files())
 
 
 class SearchResultSetter(SearchResult):
