@@ -126,14 +126,16 @@ def get_resizer() -> Resizer:
 resizer = get_resizer()
 source_folder = os.path.join('.', 'task-8.4-files', 'Source')
 result_folder = os.path.join('.', 'task-8.4-files', 'Result')
+error_list = []
 for file in os.listdir(source_folder):
     try:
         resizer_config = ResizeSettings(os.path.join(source_folder, file), result_folder)
         resizer_config.width = 200
         resizer.resize(resizer_config)
     except ExceptionIsNotImage as e:
-        print("\n", 'ERROR')
-        print(e.get_file(), 'не изображение')
-        print("\n")
+        error_list.append(e)
         continue
 
+for e in error_list:
+    error_str = '\n ERROR: {} не изображение, трансформация не удалась'.format(e.get_file())
+    print(error_str)
