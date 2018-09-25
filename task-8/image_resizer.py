@@ -85,7 +85,8 @@ class ResizerMac(Resizer):
 
     def _resize_command(self, resize_settings: ResizeSettings):
         shutil.copyfile(resize_settings.source_file, resize_settings.result_file)
-        subprocess.run('sips --resampleWidth  ' + resize_settings.width_str() + ' ' + resize_settings.result_file,
+        subprocess.run('sips --resampleWidth {width} {result} '.format(width=resize_settings.width
+                                                                       , result=resize_settings.result_file),
                        shell=True)
 
 
@@ -93,10 +94,10 @@ class ResizerLinux(Resizer):
 
     def _resize_command(self, resize_settings: ResizeSettings):
         subprocess.run(
-            'convert' + ' '
-            + resize_settings.source_file + ' -resize '
-            + resize_settings.width_str() + ' '
-            + resize_settings.result_file
+            'convert {source} -resize {width} {result} '.format(
+                source=resize_settings.source_file
+                , width=resize_settings.width
+                , result=resize_settings.result_file)
             , shell=True)
 
 
