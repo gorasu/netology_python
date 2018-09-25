@@ -110,5 +110,5 @@ class Command:
 
 path = os.path.abspath(os.path.dirname(__file__))
 file_ser = Files(os.path.abspath(os.path.join(path, 'Migrations')))
-command = Command(file_ser.get_files((lambda file_path: os.path.splitext(file_path)[1] == '.sql')))
+command = Command(file_ser.get_files(lambda file_path: os.path.splitext(file_path)[1] == '.sql'))
 command.start()
