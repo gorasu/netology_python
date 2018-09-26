@@ -1,5 +1,3 @@
-from urllib.parse import urlencode
-import requests
 from src.vk_api import *
 
 
