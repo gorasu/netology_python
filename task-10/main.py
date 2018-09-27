@@ -6,10 +6,9 @@ class Command:
     def __init__(self):
         self.request = RequestApi(self.__get_token())
         currentUser = self.request.get('users.get', {})[0]
-        self.currentUser = User.create(self.request, currentUser['id'])
+        self.current_user = User.create(self.request, currentUser['id'])
 
     def __get_token(self):
-
         token = Token(6702992, ['user,friends'])
         print('Перейдите по ссылке для получения ключа {} '.format(token.get_auth_url()))
         return input('Введите полученный ключ:')
@@ -30,13 +29,13 @@ class Command:
     def m(self):
         user_id = input('Введите user_id с которым нужно проверить пересечение:')
         user = User.create(self.request, user_id)
-        users = self.currentUser & user
+        users = self.current_user & user
         if not users:
             print('Пересечений не найдено')
             return None
 
         for user in users:
-            print('Общие друг {}, тип объекта {}'.format(user.user_id, type(user)))
+            print('Профиль друга {}'.format(user))
         print('Всего:', len(users))
 
     def p(self):
@@ -44,7 +43,7 @@ class Command:
         if user_id:
             user = User.create(self.request, user_id)
         else:
-            user = self.currentUser
+            user = self.current_user
         print(user.profile())
 
 
