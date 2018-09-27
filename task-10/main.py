@@ -36,7 +36,7 @@ class Command:
             return None
 
         for user in users:
-            print('Общие друг {}, тип объекта '.format(user.user_id, type(user)))
+            print('Общие друг {}, тип объекта {}'.format(user.user_id, type(user)))
         print('Всего:', len(users))
 
     def p(self):
