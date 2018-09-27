@@ -5,8 +5,8 @@ class Command:
 
     def __init__(self):
         self.request = RequestApi(self.__get_token())
-        currentUser = self.request.get('users.get', {})[0]
-        self.current_user = User.create(self.request, currentUser['id'])
+        current_user = self.request.get('users.get', {})[0]
+        self.current_user = User.create(self.request, current_user['id'])
 
     def __get_token(self):
         token = Token(6702992, ['user,friends'])
