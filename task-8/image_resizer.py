@@ -48,13 +48,13 @@ class ResizeSettings:
 
     @property
     def result_file(self):
-        dir_result = self.__get_result_dir()
+        dir_result = self._get_result_dir()
         file_name = os.path.basename(self.source_file)
-        if self.__is_path_same():
+        if self._is_path_same():
             file_name = 'new_' + file_name
         return os.path.join(dir_result, file_name)
 
-    def __get_result_dir(self):
+    def _get_result_dir(self):
         result_dir = self.__result_dir
 
         if self.__result_dir is None:
@@ -65,8 +65,8 @@ class ResizeSettings:
 
         return result_dir
 
-    def __is_path_same(self):
-        return self.__get_result_dir() == os.path.dirname(self.source_file)
+    def _is_path_same(self):
+        return self._get_result_dir() == os.path.dirname(self.source_file)
 
 
 class Resizer:
@@ -106,11 +106,11 @@ class ResizerLinux(Resizer):
 
 class ResizerWindows(Resizer):
 
-    def __get_command(self):
+    def _get_command(self):
         return os.path.abspath(os.path.join('.', 'task-8.4-files', 'convert.exe'))
 
     def _resize_command(self, resize_settings: ResizeSettings):
-        command = '{command} {source_file} {width} -resize {result_file}'.format(self.__get_command()
+        command = '{command} {source_file} {width} -resize {result_file}'.format(self._get_command()
                                                                                  , resize_settings.source_file
                                                                                  , resize_settings.width
                                                                                  , resize_settings.result_file)
