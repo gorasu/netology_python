@@ -22,13 +22,13 @@ class Files:
             raise NotADirectoryError()
         self.__dir_path = dir_path
 
-    def __join_path(self, path):
+    def _join_path(self, path):
         return os.path.join(self.__dir_path, path)
 
     def get_files(self, file_filter: Callable = None) -> List[File]:
         result = list()
         for entity in os.listdir(self.__dir_path):
-            entity_path = self.__join_path(entity)
+            entity_path = self._join_path(entity)
             if os.path.isfile(entity_path) and (file_filter and file_filter(entity_path)):
                 result.append(File(entity_path))
         return result
@@ -63,14 +63,14 @@ class Searcher:
         self.__files = files
         self.rest_search_result()
 
-    def __get_files_for_search(self) -> List[File]:
+    def _get_files_for_search(self) -> List[File]:
         if self.__last_result:
             return self.__last_result.files
         return self.__files
 
     def search(self, search_string) -> SearchResult:
         result = SearchResultSetter()
-        for file in self.__get_files_for_search():
+        for file in self._get_files_for_search():
             if search_string in file.read():
                 result.add_file(file)
         self.__last_result = result
@@ -85,7 +85,7 @@ class Command:
     def __init__(self, files: List[File]):
         self.__searcher = Searcher(files)
 
-    def __show_result(self, result: SearchResult):
+    def _show_result(self, result: SearchResult):
         print('Нашли в:')
         for file in result.files:
             print(file.path())
@@ -101,7 +101,7 @@ class Command:
             print('Ничего не найдено, начните поиск заново')
             self.__searcher.rest_search_result()
         else:
-            self.__show_result(result)
+            self._show_result(result)
         self.start()
 
 
