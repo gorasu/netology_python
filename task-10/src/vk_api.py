@@ -47,9 +47,9 @@ class RequestApi:
 
 class User:
 
-    def __init__(self, request: RequestApi):
+    def __init__(self, request: RequestApi, user_id):
+        self.__user_id = user_id
         self.__request = request
-        self.__user_id = None
 
     def profile(self):
         return 'https://vk.com/id{}'.format(self.user_id)
@@ -58,15 +58,12 @@ class User:
     def user_id(self):
         return self.__user_id
 
-    @user_id.setter
-    def user_id(self, user_id):
-        self.__user_id = user_id
-
     def friends_mutual(self, target_uid):
+
         friend_ids = self.__request.get('friends.getMutual',
                                         {'source_uid': self.user_id
                                             , 'target_uid': target_uid})
-        return list(map(lambda friend_id: self.create(self.__request, friend_id), friend_ids))
+        return list(map(lambda friend_id: __class__(self.__request, friend_id), friend_ids))
 
     def __and__(self, user):
         return self.friends_mutual(user.user_id)
@@ -74,8 +71,3 @@ class User:
     def __str__(self):
         return self.profile()
 
-    @staticmethod
-    def create(request, user_id):
-        user = __class__(request)
-        user.user_id = user_id
-        return user

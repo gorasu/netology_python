@@ -6,7 +6,7 @@ class Command:
     def __init__(self):
         self.request = RequestApi(self.__get_token())
         current_user = self.request.get('users.get', {})[0]
-        self.current_user = User.create(self.request, current_user['id'])
+        self.current_user = User(self.request, current_user['id'])
 
     def __get_token(self):
         token = Token(6702992, ['user,friends'])
@@ -28,7 +28,7 @@ class Command:
 
     def m(self):
         user_id = input('Введите user_id с которым нужно проверить пересечение:')
-        user = User.create(self.request, user_id)
+        user = User(self.request, user_id)
         users = self.current_user & user
         if not users:
             print('Пересечений не найдено')
@@ -41,7 +41,7 @@ class Command:
     def p(self):
         user_id = input('Введите user_id (по умолчанию текщий user):')
         if user_id:
-            user = User.create(self.request, user_id)
+            user = User(self.request, user_id)
         else:
             user = self.current_user
         print(user.profile())
