@@ -97,12 +97,9 @@ class Command:
     def start(self):
         search_string = input('Введите строку поиска:')
         result = self.search_result(search_string)
-        if result.count == 0:
+        if not result.count:
             print('Ничего не найдено, начните поиск заново')
             self.__searcher.rest_search_result()
-        elif result.count > 2:
-            print('Много файлов ищите еще')
-            print("Всего:", result.count)
         else:
             self.__show_result(result)
         self.start()
