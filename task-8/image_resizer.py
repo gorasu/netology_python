@@ -36,9 +36,6 @@ class ResizeSettings:
     def width(self, value: int):
         self.__width = value
 
-    def width_str(self):
-        return str(self.width)
-
     @property
     def source_file(self):
         return self.__source_file
@@ -107,12 +104,11 @@ class ResizerWindows(Resizer):
         return os.path.abspath(os.path.join('.', 'task-8.4-files', 'convert.exe'))
 
     def _resize_command(self, resize_settings: ResizeSettings):
-        subprocess.run(
-            self.__get_command() + ' '
-            + resize_settings.source_file + ' -resize '
-            + resize_settings.width_str() + ' '
-            + resize_settings.result_file
-            , shell=True)
+        command = '{command} {source_file} {width} -resize {result_file}'.format(self.__get_command()
+                                                                       , resize_settings.source_file
+                                                                       , resize_settings.width
+                                                                       , resize_settings.result_file )
+        subprocess.run(command, shell=True)
 
 
 def get_resizer() -> Resizer:
