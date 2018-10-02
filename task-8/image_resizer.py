@@ -6,6 +6,10 @@ import subprocess
 from sys import platform
 
 
+class ValueInitializedError(Exception):
+    pass
+
+
 class ExceptionIsNotImage(Exception):
     __file = ''
 
@@ -28,12 +32,14 @@ class ResizeSettings:
 
     @property
     def width(self):
-        if not self.__width or self.__width <= 0:
-            raise ValueError('width must be int and > 0')
+        if self.__width is None:
+            raise ValueInitializedError('width must initialized')
         return self.__width
 
     @width.setter
     def width(self, value: int):
+        if self.__width <= 0:
+            raise ValueError('width must be > 0 ')
         self.__width = value
 
     @property
@@ -105,9 +111,9 @@ class ResizerWindows(Resizer):
 
     def _resize_command(self, resize_settings: ResizeSettings):
         command = '{command} {source_file} {width} -resize {result_file}'.format(self.__get_command()
-                                                                       , resize_settings.source_file
-                                                                       , resize_settings.width
-                                                                       , resize_settings.result_file )
+                                                                                 , resize_settings.source_file
+                                                                                 , resize_settings.width
+                                                                                 , resize_settings.result_file)
         subprocess.run(command, shell=True)
 
 
