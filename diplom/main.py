@@ -4,7 +4,6 @@ from pprint import pprint
 
 from vk_api import *
 
-
 access_token = input('Введите token:')
 
 vk = VkApi(access_token)
@@ -14,12 +13,8 @@ groups = vk.get('groups.get', {'user_id': user_id, 'extended': 1})
 
 group_with_out_friends = []
 for group in groups['items']:
-    try:
-        gropu_info = vk.get('groups.getMembers', {'group_id': group['id'], 'filter': 'friends'})
-    except VkApiError as e:
-        if e.code == 6:
-            time.sleep(1)
-            gropu_info = vk.get('groups.getMembers', {'group_id': group['id'], 'filter': 'friends'})
+
+    gropu_info = vk.get('groups.getMembers', {'group_id': group['id'], 'filter': 'friends'})
     if not gropu_info['count']:
         group_with_out_friends.append(group)
     print('ID группы {}'.format(group['id']), gropu_info)
