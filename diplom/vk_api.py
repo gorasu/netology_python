@@ -54,7 +54,6 @@ class VkApi:
 
     def _call_observers(self, state):
         for observer in self.__observers.get(state):
-            print(type(observer))
             observer.update()
 
     def __main_params(self):
