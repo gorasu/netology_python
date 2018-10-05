@@ -1,5 +1,7 @@
 import time
 import urllib.parse
+from abc import ABC, abstractmethod
+
 import requests
 
 
@@ -29,12 +31,31 @@ class VkApiErrorFactory:
         return VkApiError(self.__error['error_msg'], self.__error['error_code'])
 
 
+class VkApiObserver(ABC):
+
+    @abstractmethod
+    def update(self):
+        pass
+
+
 class VkApi:
     __api_url = 'https://api.vk.com/method/'
 
     def __init__(self, token, version='5.85'):
         self.__token = token
         self.__version = version
+        self.__observers = {'wait': [], 'success': [] }
+
+    def add_observer_wait(self, observer: VkApiObserver):
+        self.__observers['wait'].append(observer)
+
+    def add_observer_success(self, observer: VkApiObserver):
+        self.__observers['success'].append(observer)
+
+    def _call_observers(self, state):
+        for observer in self.__observers.get(state):
+            print(type(observer))
+            observer.update()
 
     def __main_params(self):
         return {'access_token': self.__token, 'v': self.__version}
@@ -51,7 +72,10 @@ class VkApi:
 
     def get(self, method, params: dict = {}):
         try:
-            return self._call(method, params)
+            result = self._call(method, params)
+            self._call_observers('success')
+            return result
         except VkApiTimeLimitError as e:
+            self._call_observers('wait')
             time.sleep(1)
             return self.get(method, params)
