@@ -1,4 +1,4 @@
-from vk_api import VkApi
+from .vk_api import VkApi
 
 
 class User:
