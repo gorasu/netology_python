@@ -1,25 +1,45 @@
 import json
 import time
 from pprint import pprint
+from src import User, Group
 
-from vk_api import *
+from vk_api import VkApi, VkApiObserver
 
-access_token = input('Введите token:')
 
-vk = VkApi(access_token)
-user_id = vk.get('users.get')
-user_id = user_id[0]['id']
-groups = vk.get('groups.get', {'user_id': user_id, 'extended': 1})
+class ObserverSuccess(VkApiObserver):
+
+    def update(self):
+        print('.', sep=' ', end=' ', flush=True)
+
+
+class ObserverWait(VkApiObserver):
+
+    def update(self):
+        print('w', sep=' ', end=' ', flush=True)
+
+
+def group_to_json(group: Group):
+    info = group.get_group_info()
+    return {'name': info['name'], 'gid': info['id'], 'members_count': info['members_count']}
+
+
+vk = VkApi('ed1271af9e8883f7a7c2cefbfddfcbc61563029666c487b2f71a5227cce0d1b533c4af4c5b888633c06ae')
+vk.add_observer_success(ObserverSuccess())
+vk.add_observer_wait(ObserverWait())
+
+user = User(vk, '171691064')
+groups = user.get_groups()
+friend_ids = user.get_friend_ids()
 
 group_with_out_friends = []
-for group in groups['items']:
+for group in groups:
 
-    gropu_info = vk.get('groups.getMembers', {'group_id': group['id'], 'filter': 'friends'})
-    if not gropu_info['count']:
+    group_member = group.get_members_status(friend_ids)
+    mebmers = list(filter(lambda member: member['member'] == 1, group_member))
+
+    if not mebmers:
         group_with_out_friends.append(group)
-    print('ID группы {}'.format(group['id']), gropu_info)
 
 with open('groups.json', 'w') as file:
-    json.dump(group_with_out_friends, file, indent=4, ensure_ascii=False)
+    json.dump(group_with_out_friends, file, indent=4, default=group_to_json)
 
-pprint(group_with_out_friends)
