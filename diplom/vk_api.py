@@ -39,6 +39,11 @@ class VkApiObserver(ABC):
 
 
 class VkApi:
+    """VkApi взаимодействет с api вконтакте
+    в объект можно добавить наблюдателей за состоянием запросов api
+    add_observer_wait - наблюдатели за событием паузы по запросам
+    add_observer_success - наблюдатели за успешным запросом к api
+    """
     __api_url = 'https://api.vk.com/method/'
 
     def __init__(self, token, version='5.85'):
@@ -76,5 +81,5 @@ class VkApi:
             return result
         except VkApiTimeLimitError as e:
             self._call_observers('wait')
-            time.sleep(1)
+            time.sleep(0.35)
             return self.get(method, params)
