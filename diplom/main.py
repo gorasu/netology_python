@@ -4,24 +4,29 @@ from src import User, Group, VkApi, VkApiObserver
 
 
 class ObserverSuccess(VkApiObserver):
+    """Вывод инормации об успешном запросе к api"""
 
     def update(self, status):
         print('.', sep=' ', end=' ', flush=True)
 
 
 class ObserverWait(VkApiObserver):
+    """Вывод инормации когда приложение ожидает
+    разреешния на запрос к api"""
 
     def update(self, status):
         print('w', sep=' ', end=' ', flush=True)
 
 
 class ObserverError(VkApiObserver):
+    """Вывод инормации об обшибочном запросе к api"""
 
     def update(self, status):
         print('e', sep=' ', end=' ', flush=True)
 
 
 class ObserverLog(VkApiObserver):
+    """Логирование запросов к api"""
 
     def __init__(self):
         self.__statuses = []
@@ -33,11 +38,13 @@ class ObserverLog(VkApiObserver):
 
 
 def group_to_json(group: Group):
+    """Форматирование данных о группе для записи в json"""
     info = group.get_group_info()
     return {'name': info['name'], 'gid': info['id'], 'members_count': info['members_count']}
 
 
 def get_groups_without_friends(groups, friend_ids):
+    """фильтрация групп в которых у пользователя нет друзей"""
     group_with_out_friends = []
     for group in groups:
 

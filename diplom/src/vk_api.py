@@ -6,6 +6,7 @@ import requests
 
 
 class VkApiError(Exception):
+    """Исключение которое вызывается когда api вернуло ошибку"""
 
     def __init__(self, message, code):
         self.__code = code
@@ -21,10 +22,13 @@ class VkApiError(Exception):
 
 
 class VkApiTimeLimitError(VkApiError):
+    """Исключение врмени запроса к API, срабатывает когда привышен лимит
+    запросов в 1 секунду """
     pass
 
 
 class VkApiErrorFactory:
+    """Фабрика исключений занимается созданием исключений в зависимости от кода полученного от API"""
 
     def __init__(self, error: dict):
         self.__error = error
@@ -37,6 +41,7 @@ class VkApiErrorFactory:
 
 
 class VkApiObserver(ABC):
+    """Наблюдатель за статусом api"""
 
     @abstractmethod
     def update(self, status):
@@ -56,26 +61,31 @@ class VkApi:
         self.__token = token
         self.__version = version
         self.__observers = {'wait': [], 'success': [], 'error': []}
-        self.__status = None
 
     def add_observer_wait(self, observer: VkApiObserver):
+        """Регистрация наблюдателей за событием ожидания ответа от api"""
         self.__observers['wait'].append(observer)
 
     def add_observer_success(self, observer: VkApiObserver):
+        """регитсрация налюдателей за успешным запросом к api"""
         self.__observers['success'].append(observer)
 
     def add_observer_error(self, observer: VkApiObserver):
+        """регитсрация наблюдателей за ошибочными запросами к  api"""
         self.__observers['error'].append(observer)
 
-    def _call_observers(self, state):
+    def _call_observers(self, state, status):
+        """вызов наблюдателей на опраеделенном событии"""
         for observer in self.__observers.get(state):
-            observer.update(self.__status)
+            observer.update(status)
 
-    def __main_params(self):
+    def _main_params(self):
+        """парметры которые всегда добавляются в запросу"""
         return {'access_token': self.__token, 'v': self.__version}
 
     def _call(self, method, params):
-        params.update(self.__main_params())
+        """запрос к API"""
+        params.update(self._main_params())
         request_url = urllib.parse.urljoin(self.__api_url, method)
         response = requests.get(request_url, params)
         result = response.json()
@@ -85,18 +95,18 @@ class VkApi:
         return result['response']
 
     def get(self, method, params: dict = {}):
-        self.__status = None
+        """клиенсткий метод для составления запросов к api
+        занимается отправкой запроса и запуском событий для
+        оповещения наблюдателей
+        """
         try:
             result = self._call(method, params)
-            self.__status = 'Method {} success'.format(method)
-            self._call_observers('success')
+            self._call_observers('success', 'Api method {} success'.format(method))
             return result
         except VkApiTimeLimitError as e:
-            self.__status = 'Method {} is wait'.format(method)
-            self._call_observers('wait')
+            self._call_observers('wait',  'Api method {} is wait'.format(method))
             time.sleep(0.35)
             return self.get(method, params)
         except VkApiError as e:
-            self.__status = 'Error in method {} code: {} message:{}'.format(method, e.code, e.message)
-            self._call_observers('error')
+            self._call_observers('error', 'Error in api method {} code: {} message:{}'.format(method, e.code, e.message))
             raise e

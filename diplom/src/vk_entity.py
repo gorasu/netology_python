@@ -2,6 +2,7 @@ from .vk_api import VkApi
 
 
 class User:
+    """Сущность для взамодействия с пользователем api"""
     def __init__(self, vk_api: VkApi, user_id):
         self.__user_id = user_id
         self.__vk_api = vk_api
@@ -22,6 +23,7 @@ class User:
 
 
 class Group:
+    """Сущность для взамодействия с группами api"""
     def __init__(self, vk_api: VkApi, group_id):
         self.__group_id = group_id
         self.__vk_api = vk_api
@@ -29,9 +31,6 @@ class Group:
     @property
     def group_id(self):
         return self.__group_id
-
-    def get_members(self):
-        return {'method': 'groups.getMembers', 'params': {'group_id': self.group_id}}
 
     def get_members_status(self, user_ids: list):
         return self.__vk_api.get('groups.isMember',
